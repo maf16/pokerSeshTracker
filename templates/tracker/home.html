@@ -3,8 +3,13 @@
 {% block title %} Poker Sesh Tracker {% endblock %}
 
 {% block content %}
-    <div>
-        tracker stuff
-    </div>
+    <form action="/user/submit" method="post" id="sessionSubmit">
+        {% csrf_token %}
+        <label for="profitField"></label><input type="number" id="profitField" name="profit" required />
+        <input type="submit" value="Add" />
+    </form>
+    {% for session in sessions %}
+        <p>{{ session.profit }}</p>
+    {% endfor %}
 {% endblock %}
 

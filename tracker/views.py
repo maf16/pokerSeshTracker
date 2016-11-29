@@ -24,9 +24,7 @@ def register_new_player(sender, **kwargs):
 
 
 @require_POST
-def submit(request):
-    # session = Session(net_profit=request.POST['profit'], player=request.user.player)
-    # session.save()
+def submit_session(request):
     request.user.player.session_set.create(profit=request.POST['profit'])
     return redirect(index)
 

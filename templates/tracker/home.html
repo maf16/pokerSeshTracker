@@ -69,6 +69,7 @@
             <tr>
                 <th class="header">
                     Stakes
+                    <span class="glyphicon glyphicon-resize-vertical"></span>
                 </th>
                 <th class="header">
                     Game
@@ -78,15 +79,19 @@
                 </th>
                 <th class="header">
                     Profit
+                    <span class="glyphicon glyphicon-resize-vertical"></span>
                 </th>
                 <th class="header">
                     Length
+                    <span class="glyphicon glyphicon-resize-vertical"></span>
                 </th>
                 <th class="header">
                     £/h
+                    <span class="glyphicon glyphicon-resize-vertical"></span>
                 </th>
                 <th class="header">
                     Date played
+                    <span class="glyphicon glyphicon-resize-vertical"></span>
                 </th>
                 <th>
                     Options
@@ -96,7 +101,7 @@
         <tbody>
 
         {% for session in sessions %}
-            <tr>
+            <tr class="{% if session.profit >= 0 %} success {% else %} danger {% endif %}">
                 <td>{{ session.stake_level }}</td>
                 <td>{{ session.game_type }}</td>
                 <td>{{ session.casino_name }}</td>

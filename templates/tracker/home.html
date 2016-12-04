@@ -77,6 +77,12 @@
                 <th>
                     £/h
                 </th>
+                <th>
+                    Date played
+                </th>
+                <th>
+                    Options
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -89,6 +95,11 @@
                 <td>{{ session.profit }}</td>
                 <td>{{ session.session_length }}</td>
                 <td>{% widthratio session.profit session.session_length 1 %}</td>
+                <td>{{ session.date_played }}</td>
+                <td>
+                    <a href="/user/session/{{ session.id }}"><span class="glyphicon glyphicon-cog"></span></a>
+                    <a href="/user/session/remove/{{ session.id }}"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
             </tr>
         {% endfor %}
 

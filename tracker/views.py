@@ -38,13 +38,25 @@ def view_session(request, session_id):
     ctx = {
         'isAuthenticated': request.user.is_authenticated,
         'user': request.user,
+        'session': request.user.player.session_set.get(id=session_id),
     }
     return render(request, 'tracker/session.html', ctx)
 
 
 @require_POST
-def amend_session(request):
-    # TODO: amend session
+def amend_session(request, session_id):
+    try:
+        session = Session.objects.get(id=session_id)
+        session.stake_level = request.POST['stakeLevel']
+        session.game_type = request.POST['gameType']
+        session.casino_name = request.POST['casinoName']
+        session.session_length=request.POST['sessionLength']
+        session.profit=request.POST['profit']
+        session.date_played=request.POST['sessionDate']
+        session.save()
+    except Session.DoesNotExist:
+        # TODO: error page session does not exists
+        pass
     return redirect(index)
 
 

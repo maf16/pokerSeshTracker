@@ -36,7 +36,7 @@
         <div class="form-group">
             <label for="sessionlenght">Session Length</label>
             <div class="input-group">
-                <input class="form-control" type="number" id="sessionlenght" name="sessionLength" required placeholder="Session length" value="{{ session.session_length }}"/>
+                <input class="form-control" type="number" step="any" id="sessionlenght" name="sessionLength" required placeholder="Session length" value="{{ session.session_length }}"/>
                 <div class="input-group-addon">Hours</div>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <label for="profitField">Profit</label>
             <div class="input-group">
                 <div class="input-group-addon">£</div>
-                <input class="form-control" type="number" id="profitField" name="profit" required placeholder="Profit" value="{{ session.profit }}"/>{# £1000 #}
+                <input class="form-control" type="number" step="any" id="profitField" name="profit" required placeholder="Profit" value="{{ session.profit }}"/>{# £1000 #}
             </div>
         </div>
         <div class="form-group">

@@ -60,7 +60,11 @@ def amend_session(request, session_id):
     return redirect(index)
 
 
-# TODO: figure if i need session id param here
 def remove_session(request, session_id):
-    # TODO
+    try:
+        session = Session.objects.get(id=session_id)
+        session.delete()
+    except Session.DoesNotExist:
+        # TODO: error page session does not exists
+        pass
     return redirect(index)

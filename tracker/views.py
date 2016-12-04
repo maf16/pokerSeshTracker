@@ -25,6 +25,8 @@ def register_new_player(sender, **kwargs):
 
 @require_POST
 def submit_session(request):
-    request.user.player.session_set.create(profit=request.POST['profit'])
+    request.user.player.session_set.create(profit=request.POST['profit'], stake_level=request.POST['stakeLevel'],
+                                           game_type=request.POST['gameType'], casino_name=request.POST['casinoName'],
+                                           session_length=request.POST['sessionLength'])
     return redirect(index)
 

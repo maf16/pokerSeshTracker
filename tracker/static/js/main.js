@@ -28,6 +28,7 @@ $(document).ready(function () {
         var data = getFilterData();
         console.log(data);
         // loop over table rows applying each filter saved
+        console.log(TABLE_IDXS[data[0]['name']]);
 
         // recalculate total and avg results, draw some new graphs(?)
         updateResultsFromTableData();
@@ -59,9 +60,11 @@ function getFilterData() {
             data.push({
                 name: 'profit',
                 criteria: profitCriteria,
-                value: profitValue
+                value: parseInt(profitValue, 10)
             });
         }
+
+
     });
     return data;
 }

@@ -12,6 +12,11 @@
     {#  date lib  #}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 
+    {#  graph lib  #}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.css">
+
+    {#  local static  #}
     <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
@@ -42,10 +47,11 @@
     <div class="btn-group-container">
         <button class="btn btn-default" id="reg-new-sesh">Register new sessions</button>
         <button class="btn btn-default" id="open-sesh-filters">Show session filters</button>
+        <button class="btn btn-default" id="display-graphs">Show graphs</button>
     </div>
 
     <div id="graphs-container">
-        {#        TODO: canvas or smth? #}
+        <div id="cumul-profit-graph"></div>
     </div>
 
 

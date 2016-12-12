@@ -4,6 +4,11 @@ $(document).ready(function () {
 
     $('#sesh-submit-form').hide();
     $('#filter-container').hide();
+    $('#graphs-container').hide();
+
+    $('#display-graphs').click(function () {
+        $('#graphs-container').show();
+    });
 
     $('#reg-new-sesh').click(function () {
         $('#sesh-submit-form').show();
@@ -187,6 +192,7 @@ function updateResultsFromTableData() {
     var totalProfit = 0; var profits = [];
     var totalSessionLength = 0; var sessionLengths = [];
     var totalHourly = 0; var hourlys = [];
+    var dates = [];
     var avgProfit;
     var avgSessionLength;
     $('#session-form-data tr').each(function (idx, row) {
@@ -195,6 +201,7 @@ function updateResultsFromTableData() {
             profits.push($(cells[3]).html());
             sessionLengths.push($(cells[4]).html());
             hourlys.push($(cells[5]).html());
+            dates.push($(cells[6]).html());
         }
     });
 
@@ -218,6 +225,37 @@ function updateResultsFromTableData() {
     $('#total-session-length').html(totalSessionLength.toFixed(2));
     $('#avg-profit').html(avgProfit);
     $('#avg-session-length').html(avgSessionLength);
+
+
+    // draw/redraw graphs here
+
+    // clear old graphs
+    $('#cumul-profit-graph').html("");
+
+    // generate cumulative profits array
+    var cumulprofits = profits.slice().map(function (n) {
+        return parseInt(n, 10);
+    });
+    for (var i = 1; i < cumulprofits.length; ++i) {
+        cumulprofits[i] += cumulprofits[i-1];
+    }
+    var items = [];
+    cumulprofits.forEach(function (val, idx) {
+        items.push({
+            x: dates[idx].split('/').reverse().join('-'),
+            y: val
+        })
+    });
+    console.log(items);
+    var dataset = new vis.DataSet(items);
+    var options = {
+     //   start: dates[0].split('/').reverse().join('-'),
+     //   end: dates[dates.length-1].split('/').reverse().join('-')
+    };
+    var container = document.getElementById('cumul-profit-graph');
+
+    var cumulGraph = new vis.Graph2d(container, dataset, options);
+
 }
 
 

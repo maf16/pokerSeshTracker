@@ -10,13 +10,6 @@ from models import Player, Session
 @require_GET
 def index(request):
     sessions = request.user.player.session_set.all()
-
-    '''
-    hmm do I want to pass it in or calculate in js? seems like js is a better long term option for filtering
-    'total_profit': sum(session.profit for session in sessions),
-    'total_length': sum(session.session_length for session in sessions),
-    'avg_':
-    '''
     ctx = {
         'isAuthenticated': request.user.is_authenticated,
         'user': request.user,

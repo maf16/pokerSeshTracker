@@ -16,14 +16,35 @@
 
 {% block content %}
 
-    <div class="control-group">
+    <div id="total-results">
+        <ul class="list-inline">
+            <li>
+                Total profit: £<strong id="total-profit"></strong>
+            </li>
+            <li>
+                Total length of sessions: <strong id="total-session-length"></strong>h.
+            </li>
+            <li>
+                Average profit/session: £<strong id="avg-profit"></strong>
+            </li>
+            <li>
+                Average session length: <strong id="avg-session-length"></strong>
+            </li>
+            <li>
+                Total hourly: £<strong id="total-hourly"></strong>
+            </li>
+        </ul>
+    </div>
+
+    <div class="btn-group-container">
         <button class="btn btn-default" id="reg-new-sesh">Register new sessions</button>
         <button class="btn btn-default" id="enable-sesh-filter">Show session filters</button>
     </div>
 
-{#    <div id="total-results">#}
-{#        <span>Total profit: {{ total_profit }}</span>#}
-{#    </div>#}
+    <div id="graphs-container">
+        {#        TODO: canvas or smth? #}
+    </div>
+
 
     <div id="sesh-submit-form">
         <form action="/user/session/submit" method="post" id="sessionSubmit" class="form-inline">

@@ -18,8 +18,14 @@ $(document).ready(function () {
     });
 
     $('#filter-close').click(function () {
-        /* TODO: clear filters here as well */
         $('#filter-container').hide();
+    });
+
+    $('#filter-clear').click(function () {
+        $('#session-form-data tr').each(function (idx, row) {
+            $(row).show();
+        });
+        updateResultsFromTableData();
     });
 
     $('#filter-form').on('submit', function (e) {
@@ -27,7 +33,6 @@ $(document).ready(function () {
         // extract known tokens (eg profit><=X) and get value for each filter
         var data = getFilterData();
         // loop over table rows applying each filter saved
-        //console.log(TABLE_IDXS[data[0]['name']]);
         $('#session-form-data tr').each(function (idx, row) {
             var cells = $(row).children();
             // apply each filter on a current table row
@@ -68,7 +73,6 @@ $(document).ready(function () {
                         var matches_any_day = false;
                         filter.value.forEach(function (day) {
                             var day_of_week = moment(getPureVal(cells[TABLE_IDXS[filter.name]]), "DD/MM/YYYY").day();
-                            console.log(DAYS_OF_WEEK[day_of_week]);
                             matches_any_day |= DAYS_OF_WEEK[day_of_week] === day;
                         });
                         qualifies &= matches_any_day;

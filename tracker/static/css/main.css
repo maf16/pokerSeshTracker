@@ -4,11 +4,15 @@
 
 #total-results {
     margin: 10px 10px 10px 10px;
-    border: 2px solid #b4b4b4;
+   /* border: 2px solid #b4b4b4;
     border-radius: 25px;
-    /*  fuck css :( */
+      fuck css :( */
 }
 
 #filter-container {
     margin-top: 15px;
+}
+
+#filter-input {
+    margin-bottom: 15px;
 }

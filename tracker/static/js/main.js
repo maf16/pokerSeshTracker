@@ -64,10 +64,14 @@ $(document).ready(function () {
                         }
                         break;
                     case 'played_on':
-                        // TODO: figure out how to test whether cell date matches one of the days in the list
-                        fiter.value.forEach(function (day) {
-                           // check here if cell.val == day then display
+                        // if any of the days in the list match, qualify this row
+                        var matches_any_day = false;
+                        filter.value.forEach(function (day) {
+                            var day_of_week = moment(getPureVal(cells[TABLE_IDXS[filter.name]]), "DD/MM/YYYY").day();
+                            console.log(DAYS_OF_WEEK[day_of_week]);
+                            matches_any_day |= DAYS_OF_WEEK[day_of_week] === day;
                         });
+                        qualifies &= matches_any_day;
                         break;
                     default:
                         break;
@@ -107,7 +111,7 @@ KEYWORDS = [
 ];
 
 DAYS_OF_WEEK = [
-  'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
+    'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'
 ];
 
 PROFIT_KEYWORD = 'profit';

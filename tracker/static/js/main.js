@@ -26,9 +26,59 @@ $(document).ready(function () {
         e.preventDefault();
         // extract known tokens (eg profit><=X) and get value for each filter
         var data = getFilterData();
-        console.log(data);
         // loop over table rows applying each filter saved
-        console.log(TABLE_IDXS[data[0]['name']]);
+        //console.log(TABLE_IDXS[data[0]['name']]);
+        $('#session-form-data tr').each(function (idx, row) {
+            var cells = $(row).children();
+            // apply each filter on a current table row
+            if (data.length === 0) $(row).show();
+            data.forEach(function (filter) {
+                var qualifies = true;
+                switch (filter.name) {
+                    case 'profit':
+                        switch (filter.criteria) {
+                            case '>':
+                                qualifies &= getPureVal(cells[TABLE_IDXS[filter.name]]) > filter.value;
+                                break;
+                            case '<':
+                                qualifies &= getPureVal(cells[TABLE_IDXS[filter.name]]) < filter.value;
+                                break;
+                            default:
+                                console.error('unknown criteria "' + filter.criteria + '" for filter "' + filter.name + '"');
+                                //$(row).hide();
+                        }
+                        break;
+                    case 'session_length':
+                        switch (filter.criteria) {
+                            case '>':
+                                qualifies &= getPureVal(cells[TABLE_IDXS[filter.name]]) > filter.value;
+                                break;
+                            case '<':
+                                qualifies &= getPureVal(cells[TABLE_IDXS[filter.name]]) < filter.value;
+                                break;
+                            case '=':
+                                qualifies &= getPureVal(cells[TABLE_IDXS[filter.name]]) === filter.value;
+                                break;
+                            default:
+                                console.error('unknown criteria "' + filter.criteria + '" for filter "' + filter.name + '"');
+                        }
+                        break;
+                    case 'played_on':
+                        // TODO: figure out how to test whether cell date matches one of the days in the list
+                        fiter.value.forEach(function (day) {
+                           // check here if cell.val == day then display
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                if (qualifies) {
+                    $(row).show();
+                } else {
+                    $(row).hide();
+                }
+            })
+        });
 
         // recalculate total and avg results, draw some new graphs(?)
         updateResultsFromTableData();
@@ -40,12 +90,34 @@ $(document).ready(function () {
 
 });
 
+// TODO: refactor to use this list
+KEYWORDS = [
+    {
+        text: 'profit',
+        type: 'int'
+    },
+    {
+        text: 'played_on',
+        type: 'list'
+    },
+    {
+        text: 'session_length',
+        type: 'float'
+    }
+];
+
+DAYS_OF_WEEK = [
+  'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
+];
 
 PROFIT_KEYWORD = 'profit';
+SESSION_LENGTH_KEYWORD = 'session_length';
+PLAYED_ON_KEYWORD = 'played_on';
 TABLE_IDXS = {
     'profit': 3,
-    'length': 4,
-    'hourly': 5
+    'session_length': 4,
+    'hourly': 5,
+    'played_on': 6
 };
 
 
@@ -53,6 +125,10 @@ function getFilterData() {
     var data = [];
     var tokens = $('#filter-input').val().split(' ');
     tokens.forEach(function (token) {
+        // check for each keyword
+        // TODO: for each keyword in the list do :
+
+        // -- profit
         var profitIdx = token.search(PROFIT_KEYWORD);
         if (profitIdx !== -1) {
             var profitCriteria = token.charAt(profitIdx + PROFIT_KEYWORD.length);
@@ -64,7 +140,35 @@ function getFilterData() {
             });
         }
 
+        // -- session length
+        var sessionLenIdx = token.search(SESSION_LENGTH_KEYWORD);
+        if (sessionLenIdx !== -1) {
+            var sessionLenCriteria = token.charAt(sessionLenIdx + SESSION_LENGTH_KEYWORD.length);
+            var sessionLenVal = token.substring(sessionLenIdx + SESSION_LENGTH_KEYWORD.length + 1);
+            data.push({
+                name: 'session_length',
+                criteria: sessionLenCriteria,
+                value: parseFloat(sessionLenVal) // TODO: parse not only 1.11h but 4h35min val
+            })
+        }
 
+        // -- days played on
+        var daysPlayedIdx = token.search(PLAYED_ON_KEYWORD);
+        if (daysPlayedIdx !== -1) {
+            var filterDays = [];
+            var days = token.substring(daysPlayedIdx + PLAYED_ON_KEYWORD.length + 1).split(',');
+            days.forEach(function (day) {
+                if ($.inArray(day.toUpperCase(), DAYS_OF_WEEK) > 0) {
+                    filterDays.push(day.toUpperCase());
+                }
+            });
+            if (filterDays.length > 0) {
+                data.push({
+                    name: 'played_on',
+                    value: filterDays
+                })
+            }
+        }
     });
     return data;
 }
@@ -78,10 +182,12 @@ function updateResultsFromTableData() {
     var avgProfit;
     var avgSessionLength;
     $('#session-form-data tr').each(function (idx, row) {
-        var cells = $(row).children();
-        profits.push($(cells[3]).html());
-        sessionLengths.push($(cells[4]).html());
-        hourlys.push($(cells[5]).html());
+        if ($(row).is(':visible')) {
+            var cells = $(row).children();
+            profits.push($(cells[3]).html());
+            sessionLengths.push($(cells[4]).html());
+            hourlys.push($(cells[5]).html());
+        }
     });
 
     for (var i = 0; i < hourlys.length; ++i) {
@@ -104,4 +210,9 @@ function updateResultsFromTableData() {
     $('#total-session-length').html(totalSessionLength.toFixed(2));
     $('#avg-profit').html(avgProfit);
     $('#avg-session-length').html(avgSessionLength);
+}
+
+
+function getPureVal(elem) {
+    return $(elem).html();
 }

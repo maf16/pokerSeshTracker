@@ -3,6 +3,7 @@ $(document).ready(function () {
     $('#sessionStats').tablesorter();
 
     $('#sesh-submit-form').hide();
+    $('#filter-container').hide();
 
     $('#reg-new-sesh').click(function () {
         $('#sesh-submit-form').show();
@@ -10,6 +11,23 @@ $(document).ready(function () {
 
     $('#sesh-sumbit-close').click(function () {
         $('#sesh-submit-form').hide();
+    });
+
+    $('#open-sesh-filters').click(function () {
+        $('#filter-container').show();
+    });
+
+    $('#filter-close').click(function () {
+        /* TODO: clear filters here as well */
+        $('#filter-container').hide();
+    });
+
+    $('#filter-submit').click(function () {
+        this.preventDefault();
+    });
+
+    $('#filter-form').on('submit', function (e) {
+        e.preventDefault();
     });
 
     // calculate results on page load
@@ -45,6 +63,7 @@ function updateResultsFromTableData() {
     }
     avgSessionLength = (totalSessionLength / sessionLengths.length).toFixed(2);
 
+    // TODO: maybe extract these into separate method later
     $('#total-profit').html(totalProfit);
     $('#total-hourly').html(totalHourly.toFixed(2));
     $('#total-session-length').html(totalSessionLength.toFixed(2));

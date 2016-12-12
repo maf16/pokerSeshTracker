@@ -22,18 +22,50 @@ $(document).ready(function () {
         $('#filter-container').hide();
     });
 
-    $('#filter-submit').click(function () {
-        this.preventDefault();
-    });
-
     $('#filter-form').on('submit', function (e) {
         e.preventDefault();
+        // extract known tokens (eg profit><=X) and get value for each filter
+        var data = getFilterData();
+        console.log(data);
+        // loop over table rows applying each filter saved
+
+        // recalculate total and avg results, draw some new graphs(?)
+        updateResultsFromTableData();
+
     });
 
     // calculate results on page load
     updateResultsFromTableData();
 
 });
+
+
+PROFIT_KEYWORD = 'profit';
+TABLE_IDXS = {
+    'profit': 3,
+    'length': 4,
+    'hourly': 5
+};
+
+
+function getFilterData() {
+    var data = [];
+    var tokens = $('#filter-input').val().split(' ');
+    tokens.forEach(function (token) {
+        var profitIdx = token.search(PROFIT_KEYWORD);
+        if (profitIdx !== -1) {
+            var profitCriteria = token.charAt(profitIdx + PROFIT_KEYWORD.length);
+            var profitValue = token.substring(profitIdx + PROFIT_KEYWORD.length + 1);
+            data.push({
+                name: 'profit',
+                criteria: profitCriteria,
+                value: profitValue
+            });
+        }
+    });
+    return data;
+}
+
 
 // updates results grabbing data from the table
 function updateResultsFromTableData() {
